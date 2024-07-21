@@ -24,6 +24,11 @@ module.exports = {
       chainId: 324,
       zksync: true,
     },
+    skale_testnet: {
+      // https://testnet.skalenodes.com/v1/lanky-ill-funny-testnet	
+      url: "wss://testnet.skalenodes.com/v1/ws/lanky-ill-funny-testnet",
+      chainId: 37084624
+    },
   },
   paths: {
     artifacts: "./artifacts-zk",
