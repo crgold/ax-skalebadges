@@ -23,39 +23,22 @@ contract Badges is ERC1155Base {
             Overriden logic to disable NFT transfers and burns
     //////////////////////////////////////////////////////////////*/
 
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 id,
-        uint256 amount,
-        bytes memory data
-    ) public pure override {
-        revert("Soulbound NFTs cannot be transferred");
-    }
-
-    function safeBatchTransferFrom(
+    function _beforeTokenTransfer(
+        address operator,
         address from,
         address to,
         uint256[] memory ids,
         uint256[] memory amounts,
         bytes memory data
-    ) public pure override {
-        revert("Soulbound NFTs cannot be transferred");
-    }
+    ) internal override {
+        super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
 
-    function burn(
-        address _owner,
-        uint256 _tokenId,
-        uint256 _amount
-    ) external pure override {
-        revert("Soulbound NFTs cannot be burned");
-    }
-
-    function burnBatch(
-        address _owner,
-        uint256[] memory _tokenIds,
-        uint256[] memory _amounts
-    ) external pure override {
-        revert("Soulbound NFTs cannot be burned");
+        if (from == address(0)) {
+            for (uint256 i = 0; i < ids.length; ++i) {
+                totalSupply[ids[i]] += amounts[i];
+            }
+        } else {
+            revert("Soulbound NFT's cannot be transferred or burned");
+        }
     }
 }
